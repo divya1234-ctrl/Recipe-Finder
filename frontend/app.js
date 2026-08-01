@@ -33,17 +33,21 @@ async function generateRecipe() {
       body: JSON.stringify({ ingredients }),
     });
 
-    const data = await response.json();
+    let data = {};
+    try {
+      data = await response.json();
+    } catch {
+      data = {};
+    }
 
     if (!response.ok) {
       throw new Error(data.error || "Server returned an error");
     }
 
-    displayRecipe(data.recipe);
+    displayRecipe(data.recipe || "No recipe was returned.");
     showState("recipe");
 
   } catch (err) {
-    // Network error → backend might not be running
     if (err.message === "Failed to fetch") {
       errorMessage.textContent = "Cannot reach the backend. Make sure it is running on port 4000.";
     } else {
@@ -53,16 +57,26 @@ async function generateRecipe() {
   }
 }
 
-// ── Display recipe with simple markdown rendering ─────────
+// ── Display recipe with markdown rendering ─────────
 function displayRecipe(text) {
-  // Bold **text** or *text*
-  let html = text
-    .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
-    .replace(/\*(.*?)\*/g,     "<strong>$1</strong>")
-    .replace(/^#{1,3}\s+(.+)$/gm, "<strong>$1</strong>")
-    .replace(/\n/g, "<br/>");
-
-  recipeContent.innerHTML = html;
+  if (typeof marked !== "undefined") {
+    recipeContent.innerHTML = marked.parse(text);
+  } else {
+    // Fallback if marked didn't load
+    const escaped = text
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;");
+    
+    let html = escaped
+      .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
+      .replace(/\*(.*?)\*/g, "<strong>$1</strong>")
+      .replace(/^#{1,3}\s+(.+)$/gm, "<strong>$1</strong>")
+      .replace(/^Steps:/gm, "<strong>Steps:</strong>")
+      .replace(/^Ingredients:/gm, "<strong>Ingredients:</strong>")
+      .replace(/\n/g, "<br/>");
+    recipeContent.innerHTML = html;
+  }
 }
 
 // ── UI States ─────────────────────────────────────────────
@@ -127,5 +141,10 @@ document.head.appendChild(shakeStyle);
 
 // ── Enter key support ─────────────────────────────────────
 input.addEventListener("keydown", (e) => {
-  if (e.key === "Enter") generateRecipe();
+  if (e.key === "Enter") {
+    e.preventDefault();
+    generateRecipe();
+  }
 });
+
+generateBtn.addEventListener("click", generateRecipe);
