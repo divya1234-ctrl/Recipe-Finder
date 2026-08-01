@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Recipe Finder 🍽️</title>
+  <meta name="description" content="Enter your ingredients and get an AI-generated recipe instantly using Groq AI." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Animated background blobs -->
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+
+  <div class="container">
+
+    <!-- Header -->
+    <header class="header">
+      <div class="logo">
+        <span class="logo-icon">🍽️</span>
+        <span class="logo-text">RecipeAI</span>
+      </div>
+      <p class="tagline">Turn your ingredients into a delicious recipe instantly</p>
+    </header>
+
+    <!-- Input Card -->
+    <div class="card input-card">
+      <h1 class="card-title">What's in your kitchen?</h1>
+      <p class="card-subtitle">Type in the ingredients you have, separated by commas</p>
+
+      <div class="input-wrapper">
+        <span class="input-icon">🥕</span>
+        <input
+          id="ingredientsInput"
+          type="text"
+          class="ingredient-input"
+          placeholder="e.g. chicken, garlic, tomato, onion..."
+          autocomplete="off"
+        />
+      </div>
+
+      <!-- Suggestion chips -->
+      <div class="suggestions">
+        <span class="suggest-label">Try:</span>
+        <button class="chip" onclick="addChip('eggs, butter, flour, sugar')">🥚 Eggs & Butter</button>
+        <button class="chip" onclick="addChip('rice, soy sauce, egg, carrot')">🍚 Fried Rice</button>
+        <button class="chip" onclick="addChip('pasta, tomato, garlic, olive oil')">🍝 Pasta</button>
+        <button class="chip" onclick="addChip('chicken, lemon, garlic, herbs')">🍗 Chicken</button>
+      </div>
+
+      <button id="generateBtn" class="generate-btn" onclick="generateRecipe()">
+        <span class="btn-icon">✨</span>
+        <span class="btn-text">Generate Recipe</span>
+      </button>
+    </div>
+
+    <!-- Loading State -->
+    <div id="loadingCard" class="card loading-card hidden">
+      <div class="loader-wrap">
+        <div class="spinner"></div>
+        <div class="loading-dots">
+          <span></span><span></span><span></span>
+        </div>
+      </div>
+      <p class="loading-text">AI is cooking up your recipe...</p>
+      <p class="loading-sub">Powered by LLaMA 3.1 via Groq</p>
+    </div>
+
+    <!-- Recipe Output Card -->
+    <div id="recipeCard" class="card recipe-card hidden">
+      <div class="recipe-header">
+        <div class="recipe-badge">
+          <span>🤖 AI Generated</span>
+        </div>
+        <button class="copy-btn" id="copyBtn" onclick="copyRecipe()">📋 Copy</button>
+      </div>
+      <div id="recipeContent" class="recipe-content"></div>
+      <div class="recipe-footer">
+        <span class="source-tag">⚡ Groq AI · LLaMA 3.1</span>
+        <button class="try-again-btn" onclick="tryAgain()">🔁 Try Another</button>
+      </div>
+    </div>
+
+    <!-- Error Card -->
+    <div id="errorCard" class="card error-card hidden">
+      <div class="error-icon">⚠️</div>
+      <p class="error-title">Something went wrong</p>
+      <p id="errorMessage" class="error-message"></p>
+      <button class="try-again-btn" onclick="tryAgain()">Try Again</button>
+    </div>
+
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
