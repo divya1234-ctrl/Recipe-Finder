@@ -371,9 +371,41 @@ body {
 .recipe-content::-webkit-scrollbar-track { background: transparent; }
 .recipe-content::-webkit-scrollbar-thumb { background: rgba(167,139,250,0.4); border-radius: 3px; }
 
-/* Markdown-like formatting inside recipe */
-.recipe-content strong { color: var(--accent2); font-weight: 600; }
-
+/* Markdown formatting inside recipe */
+.recipe-content h1 {
+  font-size: 1.6rem;
+  color: var(--accent1);
+  margin-bottom: 8px;
+  line-height: 1.2;
+}
+.recipe-content h2, .recipe-content h3 {
+  font-size: 1.2rem;
+  color: var(--accent2);
+  margin-top: 24px;
+  margin-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 4px;
+}
+.recipe-content p {
+  margin-bottom: 16px;
+}
+.recipe-content p:last-child {
+  margin-bottom: 0;
+}
+.recipe-content ul, .recipe-content ol {
+  margin-bottom: 20px;
+  padding-left: 24px;
+}
+.recipe-content li {
+  margin-bottom: 8px;
+}
+.recipe-content strong { 
+  color: var(--accent3); 
+  font-weight: 600; 
+}
+.recipe-content em {
+  color: var(--text-secondary);
+}
 .recipe-footer {
   display: flex;
   align-items: center;
